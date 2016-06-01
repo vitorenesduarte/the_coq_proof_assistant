@@ -99,32 +99,29 @@ Variable M : X->X->X->Prop.
 
 Lemma ex1 : (A->B) /\ (C->D) -> (A/\C->B/\D).
 Proof.
-intros H1 H2.
-destruct H1 as [H3 H4].
-destruct H2 as [H5 H6].
+intros.
+destruct H.
+destruct H0.
 split.
-apply H3.
-exact H5.
-apply H4.
-exact H6.
+  apply H; assumption.
+  apply H1; assumption.
 Qed.
-
 
 Lemma ex2 : ~A \/ B -> (A -> B).
 Proof.
-intros H1 H2.
-destruct H1 as [H3 | H4].
-elim H3.
-exact H2.
-exact H4.
+intros.
+destruct H.
+elim H.
+assumption.
+assumption.
 Qed.
 
 Lemma ex3 : (forall x:X, (M a x x)) -> (forall x y z:X, (M x y z)->(M (f x) y (f z))) -> (exists z:X, (M (f a) z (f (f a)))).
 Proof.
-intros H1 H2.
+intros.
 exists (f a).
-apply H2.
-apply H1.
+apply H0.
+apply H.
 Qed.
 
 
@@ -183,49 +180,54 @@ Inductive ElemB (x:B) : LAB -> Prop :=
      | el_tailB : forall y l, ElemB x l -> ElemB x (consB y l).
 
 
+
 Lemma cleanB_dropB : forall l, cleanB (dropB l) = cleanB l.
 Proof.
 induction l.
 (* base *)
 simpl.
 reflexivity.
-(* ind1 *)
+(* ind 1 *)
 simpl.
 rewrite IHl.
 reflexivity.
-(* ind2 *)
+(* ind 2 *)
 simpl.
 reflexivity.
 Qed.
+
 
 Lemma countA_countAB : forall l, lengthA l <= lengthAB l.
 Proof.
 induction l.
 (* base *)
 simpl.
-Search le.
-apply le_n.
-(* ind *)
+trivial.
+(* ind 1 *)
 simpl.
-Search le.
+SearchAbout le.
 apply le_n_S.
-exact IHl.
+assumption.
+(* ind 2 *)
 simpl.
+SearchPattern (?x <= S ?y).
 apply le_S.
-exact IHl.
+assumption.
 Qed.
 
 Lemma elemB_countB : forall l, (exists x, ElemB x l) -> lengthB l > 0.
 Proof.
-intro l.
-intro H.
-destruct H as [x H1].
-induction H1.
-(* base *)
+intro.
+intro.
+destruct H.
+induction H.
+(* 1 *)
 simpl.
-SearchPattern (_ > 0).
 apply gt_Sn_O.
-apply IHElemB.
+(* 2 *)
+simpl.
+assumption.
+(* 3 *)
 simpl.
 apply gt_Sn_O.
 Qed.
