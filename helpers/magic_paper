@@ -1,0 +1,29 @@
+
+|| ~ ||
+* Hypotheses H
+apply H
+unfold not in H
+elim H     !!!!!!
+
+* Conclusion
+intros H
+red
+
+
+|| list l ||
+
+* Conclusion
+pattern l
+induction l
+
+
+|| hipotese de indução ||
+* Hypotheses H
+rewrite H
+
+
+|| tipo indutivo ||
+* Hypotheses H
+inversion H
+elim H
+
